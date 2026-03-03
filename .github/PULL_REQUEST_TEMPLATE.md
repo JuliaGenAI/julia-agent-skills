@@ -1,10 +1,10 @@
-## New Skill: `skill-name`
+# New Skill: `skill-name`
 
 **Description:** Brief description of what this skill does.
 
 **Julia packages/topics covered:** e.g., DocumenterVitepress.jl, Makie.jl
 
-### Checklist
+## Checklist
 
 - [ ] Skill directory is under `skills/` with a lowercase-hyphenated name
 - [ ] `SKILL.md` has `name` and `description` in YAML frontmatter
