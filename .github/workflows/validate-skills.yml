@@ -4,10 +4,12 @@ on:
   pull_request:
     paths:
       - 'skills/**'
+      - '.claude-plugin/marketplace.json'
   push:
     branches: [main]
     paths:
       - 'skills/**'
+      - '.claude-plugin/marketplace.json'
 
 jobs:
   validate:
@@ -33,4 +35,21 @@ jobs:
               fi
             fi
           done
+          exit $failed
+
+      - name: Check marketplace entries
+        run: |
+          failed=0
+          for skill_dir in skills/*/; do
+            if [ -f "$skill_dir/SKILL.md" ]; then
+              skill_name=$(basename "$skill_dir")
+              if ! grep -q "\"./skills/$skill_name\"" .claude-plugin/marketplace.json; then
+                echo "ERROR: skills/$skill_name has SKILL.md but no entry in .claude-plugin/marketplace.json"
+                failed=1
+              fi
+            fi
+          done
+          if [ "$failed" -eq 0 ]; then
+            echo "All skills have marketplace entries."
+          fi
           exit $failed
