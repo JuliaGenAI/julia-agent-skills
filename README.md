@@ -29,6 +29,20 @@ npx skills add JuliaGenAI/julia-agent-skills --skill documenter-vitepress
 skild install JuliaGenAI/julia-agent-skills
 ```
 
+**GitHub Copilot in VS Code** (global, always enabled):
+
+Clone this repo and symlink skills into your personal skills directory:
+
+```sh
+git clone https://github.com/JuliaGenAI/julia-agent-skills.git ~/dev/julia-agent-skills
+mkdir -p ~/.copilot/skills
+ln -s ~/dev/julia-agent-skills/skills/documenter-vitepress ~/.copilot/skills/documenter-vitepress
+```
+
+Copilot automatically discovers skills in `~/.copilot/skills/` and loads them when your prompt matches. To update, `git pull` in the cloned repo.
+
+To add skills to a single repository instead, place them under `.github/skills/` in that repo.
+
 ## Available Skills
 
 | Skill | Description |
