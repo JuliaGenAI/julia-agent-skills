@@ -34,6 +34,7 @@ skild install JuliaGenAI/julia-agent-skills
 | Skill | Description |
 |-------|-------------|
 | [documenter-vitepress](skills/documenter-vitepress/) | Set up and develop Julia documentation sites with DocumenterVitepress.jl |
+| [jump](skills/jump/) | Build, solve, and debug mathematical optimization models with JuMP.jl |
 
 ## Contributing
 
