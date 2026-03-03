@@ -5,36 +5,17 @@ description: Use when setting up or developing a Julia documentation site with D
 
 # DocumenterVitepress.jl
 
-DocumenterVitepress.jl builds Julia documentation sites using Documenter.jl's content pipeline with VitePress (a Vue-powered static site generator) as the frontend. It produces modern static sites with search, dark mode, and responsive layout. Since VitePress runs on Vue, you can add custom Vue components to your docs for interactive content.
+DocumenterVitepress.jl builds Julia docs using Documenter.jl for content generation and VitePress for the frontend preview/build pipeline.
 
-## Setup
-
-Setup is minimal — DocumenterVitepress manages all VitePress/npm machinery (package.json, node_modules, .vitepress config, theme files) automatically. You only need to:
-
-1. **Add Julia deps** to your Project.toml (or `docs/Project.toml` for package repos):
-   ```
-   pkg> add Documenter DocumenterVitepress
-   ```
-
-2. **Write `make.jl`** using `DocumenterVitepress.MarkdownVitepress` as the format and `deploydocs` for deployment.
-
-3. **Write your `src/` content** — markdown files, with VitePress frontmatter wrapped in `` ```@raw html `` blocks.
-
-4. **Add `.gitignore` entries**: `Manifest.toml`, `build/`, `node_modules/`, `package-lock.json`
-
-5. **Add CI workflow** — standard `julia-actions/julia-docdeploy@v1` GitHub Action (requires `DOCUMENTER_KEY` secret via `DocumenterTools.genkeys()`).
-
-See `setup-reference.md` in this skill directory for complete templates (make.jl variants, index.md hero pattern, CI workflow YAML).
-
-### Custom package.json
-
-Do NOT add a `package.json` unless you need custom JavaScript dependencies. DocumenterVitepress provides its own default and manages npm install/build automatically.
-
-If you DO provide your own `package.json` (for custom VitePress plugins, etc.), you take on npm management yourself — you must run `npm install` manually before `dev_docs()` or any local builds. This is because `dev_docs()` only auto-installs npm deps when it had to supply a default `package.json`.
+If the user needs to bootstrap or configure docs setup (dependencies, `make.jl`, CI, `.gitignore`, layout templates), refer them to `skills/documenter-vitepress/setup-reference.md`.
 
 ## Local Development Workflow
 
-The fast iteration loop has two stages: (1) run `makedocs` to convert source markdown, (2) run VitePress dev server to preview.
+This skill focuses on the day-to-day local iteration loop after setup already exists.
+
+The fast loop has two stages:
+1. Run `makedocs` to regenerate `build/.documenter/` content from `src/`.
+2. Run VitePress dev server via `dev_docs` to preview.
 
 ### Step 1: Set `build_vitepress = false` in make.jl
 
@@ -45,7 +26,7 @@ format = DocumenterVitepress.MarkdownVitepress(
 ),
 ```
 
-This makes `makedocs` only emit markdown to `build/.documenter/` without invoking npm/VitePress — much faster for iteration.
+This makes `makedocs` emit markdown artifacts only, without running the full VitePress build.
 
 ### Step 2: Run makedocs
 
@@ -53,67 +34,69 @@ This makes `makedocs` only emit markdown to `build/.documenter/` without invokin
 include("make.jl")
 ```
 
-Or from shell: `julia --project=. -e 'include("make.jl")'` (use `--project=docs` for package repos).
+Or from shell:
+- Standalone docs repo: `julia --project=. -e 'include("make.jl")'`
+- Package docs in `docs/`: `julia --project=docs -e 'include("docs/make.jl")'`
 
 ### Step 3: Start the dev server (background process)
 
-**`dev_docs` blocks forever** — it runs the VitePress dev server as a long-running process. You must run it in a non-blocking way:
+`dev_docs` is a long-running process and blocks the current task/thread. Start it in a non-blocking way:
 
-**From shell (recommended):** Run as a background process via the Bash tool with `run_in_background: true`:
+From shell:
 ```bash
 julia --project=. -e 'using DocumenterVitepress; DocumenterVitepress.dev_docs("build")'
 ```
 
-**From Julia REPL/MCP:** Use `Threads.@spawn` so it doesn't block:
+From Julia REPL:
 ```julia
 using DocumenterVitepress
 Threads.@spawn DocumenterVitepress.dev_docs("build")
 ```
 
-For **package repos**, the path is `"docs/build"` instead of `"build"`.
+For package repos where docs live under `docs/`, use `"docs/build"` instead of `"build"`.
 
 The server starts at `http://localhost:5173/` with hot reload.
 
-**Gotcha:** `dev_docs` expects the **build directory** path, not `build/.documenter`. It appends `/.documenter` internally. Passing `build/.documenter` produces `build/.documenter/.documenter` and a 404.
+Gotcha: `dev_docs` expects the build directory path (for example, `build`), not `build/.documenter`. It appends `/.documenter` internally.
 
 ### Step 4: Edit-rebuild-preview cycle
 
 1. Edit files in `src/`
 2. Re-run `include("make.jl")`
-3. Kill the dev server process and restart it
-4. Browser refreshes automatically
+3. If the generated content changed but the browser did not update, restart `dev_docs`
+4. Confirm changes in browser
 
 ### Teardown
 
-Remove `build_vitepress = false` (or set it to `true`) before committing, so CI builds the full site.
+Before committing, remove `build_vitepress = false` (or set it to `true`) so CI and release builds run the full pipeline.
 
-## Two Repo Layouts
+## Workflow-Specific Gotchas
 
-**Package docs** (most common): docs in `docs/` inside a Julia package repo. Use `--project=docs`, path `"docs/build"`.
+### npm install ownership (DV-managed vs self-managed)
 
-**Standalone site** (org landing pages): docs at repo root. Use `--project=.`, path `"build"`, and `modules = Module[]` in makedocs.
+`npm install` behavior depends on who owns `package.json`:
 
-See `setup-reference.md` for complete make.jl templates for both layouts.
+- **DV-managed npm (default):** If you do **not** provide your own `package.json`, DocumenterVitepress supplies defaults and manages npm dependencies for you during local docs flows.
+- **Self-managed npm:** If the repo provides a custom `package.json`, you own npm dependency management. Run `npm install` yourself (especially after dependency changes or lockfile updates) before `dev_docs` or local builds.
 
-## What DocumenterVitepress Manages Automatically
+Rule of thumb: no custom `package.json` means DV manages npm; custom `package.json` means you manage npm.
 
-These are auto-generated if not present — you don't need to create them:
-- `package.json` (npm dependencies including vitepress)
-- `.vitepress/config.mts` (sidebar, navbar, search)
-- `.vitepress/theme/` (index.ts, style.css, docstrings.css)
-- `.vitepress/mathjax-plugin.ts`
-- `components/VersionPicker.vue`
+### Custom `.vitepress/` theme files
 
-Only provide custom versions to override defaults (e.g., custom colors, extra VitePress plugins).
+If the repo overrides theme files, keep them in sync with the DocumenterVitepress version used by the project. Breakage here usually shows up during local preview first.
+
+### Manual rebuild expectation
+
+DocumenterVitepress does not continuously re-run `makedocs`. After content changes, re-run `make.jl` and keep `dev_docs` running for browser-side hot reload.
 
 ### Customizing the theme or adding Vue components
 
-If you want to add custom Vue components or modify the theme, you must provide the **full set** of theme files — DocumenterVitepress only auto-generates files that are missing, so once you provide any custom theme file, you need to populate all required files:
+If you add custom Vue components or theme overrides, keep the full required theme set present:
 
 - `src/.vitepress/theme/index.ts` — theme entry point that registers Vue components
 - `src/.vitepress/theme/style.css` — custom CSS
 - `src/.vitepress/theme/docstrings.css` — docstring block styling
 
-Start by copying the defaults from DocumenterVitepress's template (or run `DocumenterVitepress.generate_template()`), then modify. Your `index.ts` must import and register any custom Vue components you add.
+Start from the project's working defaults and then modify. Ensure `index.ts` imports and registers any custom components.
 
-The same "you own it" principle from `package.json` applies: once you provide custom `.vitepress/` files, you're responsible for keeping them compatible with DocumenterVitepress updates.
+For first-time setup patterns and templates, use `skills/documenter-vitepress/setup-reference.md`.
