@@ -1,0 +1,55 @@
+name: Validate Skills
+
+on:
+  pull_request:
+    paths:
+      - 'skills/**'
+      - '.claude-plugin/marketplace.json'
+  push:
+    branches: [main]
+    paths:
+      - 'skills/**'
+      - '.claude-plugin/marketplace.json'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install skills-ref
+        run: pip install git+https://github.com/agentskills/agentskills.git#subdirectory=skills-ref
+
+      - name: Validate all skills
+        run: |
+          failed=0
+          for skill_dir in skills/*/; do
+            if [ -d "$skill_dir" ]; then
+              echo "Validating $skill_dir..."
+              if ! skills-ref validate "$skill_dir"; then
+                failed=1
+              fi
+            fi
+          done
+          exit $failed
+
+      - name: Check marketplace entries
+        run: |
+          failed=0
+          for skill_dir in skills/*/; do
+            if [ -f "$skill_dir/SKILL.md" ]; then
+              skill_name=$(basename "$skill_dir")
+              if ! grep -q "\"./skills/$skill_name\"" .claude-plugin/marketplace.json; then
+                echo "ERROR: skills/$skill_name has SKILL.md but no entry in .claude-plugin/marketplace.json"
+                failed=1
+              fi
+            fi
+          done
+          if [ "$failed" -eq 0 ]; then
+            echo "All skills have marketplace entries."
+          fi
+          exit $failed
