@@ -14,6 +14,7 @@ If the user needs to bootstrap or configure docs setup (dependencies, `make.jl`,
 This skill focuses on the day-to-day local iteration loop after setup already exists.
 
 The fast loop has two stages:
+
 1. Run `makedocs` to regenerate `build/.documenter/` content from `src/`.
 2. Run VitePress dev server via `dev_docs` to preview.
 
@@ -35,6 +36,7 @@ include("make.jl")
 ```
 
 Or from shell:
+
 - Standalone docs repo: `julia --project=. -e 'include("make.jl")'`
 - Package docs in `docs/`: `julia --project=docs -e 'include("docs/make.jl")'`
 
@@ -43,11 +45,13 @@ Or from shell:
 `dev_docs` is a long-running process and blocks the current task/thread. Start it in a non-blocking way:
 
 From shell:
+
 ```bash
 julia --project=. -e 'using DocumenterVitepress; DocumenterVitepress.dev_docs("build")'
 ```
 
 From Julia REPL:
+
 ```julia
 using DocumenterVitepress
 Threads.@spawn DocumenterVitepress.dev_docs("build")
