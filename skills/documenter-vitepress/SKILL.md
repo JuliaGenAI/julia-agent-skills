@@ -1,6 +1,6 @@
 ---
 name: documenter-vitepress
-description: Use when setting up or developing a Julia documentation site with DocumenterVitepress.jl. Triggers when working with Documenter.jl + VitePress, creating make.jl for docs, setting up Julia package documentation, or building organization landing pages. Also use when the user mentions DocumenterVitepress, VitePress for Julia docs, or wants to preview docs locally with hot reload.
+description: Use when setting up or developing a Julia based documentation site with DocumenterVitepress.jl.  Also use when the user mentions DocumenterVitepress, VitePress for Julia docs, or wants to preview docs locally with hot reload.
 ---
 
 # DocumenterVitepress.jl
@@ -96,6 +96,8 @@ If you add custom Vue components or theme overrides, keep the full required them
 - `src/.vitepress/theme/index.ts` — theme entry point that registers Vue components
 - `src/.vitepress/theme/style.css` — custom CSS
 - `src/.vitepress/theme/docstrings.css` — docstring block styling
+
+You can populate all pre-generated Vitepress files by invoking `DocumenterVitepress.generate_template("MyPackage/docs", "MyPackage")`.  Delete everything you do not want to override / customize.
 
 Start from the project's working defaults and then modify. Ensure `index.ts` imports and registers any custom components.
 
