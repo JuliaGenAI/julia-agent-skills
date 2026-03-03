@@ -4,7 +4,14 @@ Community-maintained [Agent Skills](https://agentskills.io) for Julia developmen
 
 ## Install
 
-**Using npx:**
+**Claude Code** (plugin marketplace):
+
+```
+/plugin marketplace add JuliaGenAI/julia-agent-skills
+/plugin install documenter-vitepress@julia-agent-skills
+```
+
+**Cross-tool** (npx skills):
 
 ```sh
 npx skills add JuliaGenAI/julia-agent-skills

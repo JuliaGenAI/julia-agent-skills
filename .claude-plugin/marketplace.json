@@ -1,0 +1,21 @@
+{
+  "name": "julia-agent-skills",
+  "owner": {
+    "name": "JuliaGenAI"
+  },
+  "metadata": {
+    "description": "Agent skills for Julia development",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "documenter-vitepress",
+      "description": "Set up and develop Julia documentation sites with DocumenterVitepress.jl",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/documenter-vitepress"
+      ]
+    }
+  ]
+}

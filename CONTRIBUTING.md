@@ -95,13 +95,27 @@ Helps with documentation.
 
 ## Updating the Catalog
 
-Add a row to the Available Skills table in `README.md`:
+Two things to update when adding a skill:
+
+**1. README.md** — Add a row to the Available Skills table:
 
 ```markdown
 | [my-skill](skills/my-skill/) | One-line description of what it helps with |
 ```
 
-Keep the description short — one sentence is enough. The full description is in SKILL.md.
+**2. `.claude-plugin/marketplace.json`** — Add a plugin entry so Claude Code users can install your skill individually:
+
+```json
+{
+  "name": "my-skill",
+  "description": "One-line description of what it helps with",
+  "source": "./",
+  "strict": false,
+  "skills": ["./skills/my-skill"]
+}
+```
+
+Add this to the `plugins` array in the marketplace file.
 
 ## CI Validation
 
