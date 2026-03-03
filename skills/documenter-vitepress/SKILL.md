@@ -7,7 +7,7 @@ description: Use when setting up or developing a Julia documentation site with D
 
 DocumenterVitepress.jl builds Julia docs using Documenter.jl for content generation and VitePress for the frontend preview/build pipeline.
 
-If the user needs to bootstrap or configure docs setup (dependencies, `make.jl`, CI, `.gitignore`, layout templates), refer them to `skills/documenter-vitepress/setup-reference.md`.
+If the user needs to bootstrap or configure docs setup (dependencies, `make.jl`, CI, `.gitignore`, layout templates), refer to `references/setup-reference.md`.
 
 ## Local Development Workflow
 
@@ -99,4 +99,4 @@ If you add custom Vue components or theme overrides, keep the full required them
 
 Start from the project's working defaults and then modify. Ensure `index.ts` imports and registers any custom components.
 
-For first-time setup patterns and templates, use `skills/documenter-vitepress/setup-reference.md`.
+For first-time setup patterns and templates, use `references/setup-reference.md`.

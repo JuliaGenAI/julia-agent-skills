@@ -107,7 +107,7 @@ Note: the triple backticks above have spaces for escaping — in real files they
 
 ## .gitignore
 
-```
+```gitignore
 Manifest.toml
 build/
 node_modules/
