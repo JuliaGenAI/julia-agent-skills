@@ -3,7 +3,7 @@
 # Solve a production planning LP for varying demand levels
 # without rebuilding the model each time.
 
-using JuMP, HiGHS
+using JuMP, HiGHS, Printf
 import ParametricOptInterface as POI
 
 model = Model(() -> POI.Optimizer(HiGHS.Optimizer))
@@ -30,7 +30,6 @@ for d in 50:25:150
     set_parameter_value(demand, Float64(d))
     optimize!(model)
     @assert termination_status(model) == OPTIMAL
-    Printf = @sprintf("  %3d  → %6.1f | %11.1f | %12.1f",
+    @printf("  %3d  → %6.1f | %11.1f | %12.1f\n",
         d, objective_value(model), value(x), value(y))
-    println(Printf)
 end
