@@ -47,6 +47,7 @@ To add skills to a single repository instead, place them under `.github/skills/`
 
 | Skill | Description |
 |-------|-------------|
+| [julia-general](skills/julia-general/) | Foundational Julia development practices: doc lookup, package management, conventions |
 | [documenter-vitepress](skills/documenter-vitepress/) | Set up and develop Julia documentation sites with DocumenterVitepress.jl |
 
 ## Contributing

@@ -9,6 +9,15 @@
   },
   "plugins": [
     {
+      "name": "julia-general",
+      "description": "Foundational Julia development practices: doc lookup, package management, conventions",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/julia-general"
+      ]
+    },
+    {
       "name": "documenter-vitepress",
       "description": "Set up and develop Julia documentation sites with DocumenterVitepress.jl",
       "source": "./",

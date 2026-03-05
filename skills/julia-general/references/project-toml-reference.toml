@@ -1,0 +1,77 @@
+# ============================================================================
+# Reference Project.toml — all sections, fully annotated
+# ============================================================================
+# This is a reference example showing every section a Project.toml can have.
+# Real projects use only the sections they need.
+#
+# RULES REMINDER:
+#   - Use Pkg.jl APIs (add, rm, compat, etc.) for [deps] and [compat]
+#   - Only manually edit: [extensions], [sources], [workspace], [targets]
+# ============================================================================
+
+name = "MyPackage"
+uuid = "12345678-1234-1234-1234-123456789abc"
+authors = ["Jane Developer <jane@example.com>"]
+version = "0.3.2"
+
+# ---- [deps] ----------------------------------------------------------------
+# Direct dependencies. NEVER edit by hand — use Pkg.add / Pkg.rm.
+[deps]
+JSON3 = "0f8b85d8-7281-11e9-16c2-39a750bddbf1"
+HTTP = "cd3eb016-35fb-5094-929b-558a96fad6f3"
+DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
+
+# ---- [weakdeps] ------------------------------------------------------------
+# Packages that are NOT loaded unless the user also loads them.
+# Use Pkg.add("Makie"; target=:weakdeps) to add, or edit manually.
+[weakdeps]
+Makie = "ee78f7c6-11fb-53f2-987a-cfe4a2b5a57a"
+CUDA = "052768ef-5323-5732-b1bb-66c8b64840ba"
+
+# ---- [extensions] ----------------------------------------------------------
+# Code in ext/ that loads only when the corresponding weakdep is available.
+# MUST be edited manually — no Pkg API for this.
+[extensions]
+MyPackageMakieExt = "Makie"
+MyPackageCUDAExt = ["CUDA"]                     # array form for multiple triggers
+# MyPackageMultiExt = ["Makie", "CUDA"]         # extension needing BOTH packages
+
+# ---- [sources] -------------------------------------------------------------
+# Custom package sources (registries, URLs, local paths).
+# Edit manually — no Pkg API.
+[sources]
+# Example: pin a dependency to a specific repo/branch
+# SomePrivatePkg = {url = "https://github.com/Org/SomePrivatePkg.jl", rev = "main"}
+# Or a local path:
+# LocalDep = {path = "../LocalDep.jl"}
+
+# ---- [compat] --------------------------------------------------------------
+# Version bounds. Use Pkg.compat("PkgName", "bounds") to set, or edit manually.
+# Every direct dependency SHOULD have a compat entry for reproducibility.
+[compat]
+julia = "1.10"
+JSON3 = "1.14"
+HTTP = "1.10"
+DataFrames = "1.6"
+Makie = "0.21"
+CUDA = "5"
+
+# ---- [workspace] -----------------------------------------------------------
+# Declares sub-environments that share the root's dependency resolution.
+# Edit manually — no Pkg API.
+[workspace]
+projects = ["test", "docs", "benchmark"]
+
+# ---- [extras] (LEGACY) -----------------------------------------------------
+# Old way to declare test-only dependencies inline.
+# PREFER: separate test/Project.toml + [workspace] projects = ["test"]
+# Shown here for reference when working with older packages.
+# [extras]
+# Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+# CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
+
+# ---- [targets] (LEGACY) ----------------------------------------------------
+# Declares which [extras] belong to which target (usually "test").
+# PREFER: separate test/Project.toml + [workspace] projects = ["test"]
+# [targets]
+# test = ["Test", "CSV"]
