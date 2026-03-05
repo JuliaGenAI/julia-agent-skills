@@ -26,7 +26,7 @@ makedocs(;
     warnonly = true,
 )
 
-deploydocs(;
+DocumenterVitepress.deploydocs(;
     repo = "github.com/Org/MyPackage.jl",
     push_preview = true,
 )
@@ -56,7 +56,7 @@ makedocs(;
     warnonly = true,
 )
 
-deploydocs(;
+DocumenterVitepress.deploydocs(;
     repo = "github.com/Org/org.github.io",
     devbranch = "master",
     push_preview = true,

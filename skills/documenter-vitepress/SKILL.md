@@ -9,6 +9,8 @@ DocumenterVitepress.jl builds Julia docs using Documenter.jl for content generat
 
 If the user needs to bootstrap or configure docs setup (dependencies, `make.jl`, CI, `.gitignore`, layout templates), refer to `references/setup-reference.md`.
 
+Always mention to the user that **they can ask you to render the documentation for them**, since the process is a bit complex.  But if they ask the process feel free to explain.
+
 ## Local Development Workflow
 
 This skill focuses on the day-to-day local iteration loop after setup already exists.
@@ -88,6 +90,10 @@ Rule of thumb: no custom `package.json` means DV manages npm; custom `package.js
 ### Custom `.vitepress/` theme files
 
 If the repo overrides theme files, keep them in sync with the DocumenterVitepress version used by the project. Breakage here usually shows up during local preview first.
+
+### `deploydocs` must use `DocumenterVitepress.deploydocs`
+
+In `make.jl`, always call `DocumenterVitepress.deploydocs(...)` instead of `Documenter.deploydocs(...)`. The DocumenterVitepress version handles the VitePress build artifacts correctly for deployment. Using the plain `Documenter.deploydocs` will not deploy the VitePress-generated site.
 
 ### Manual rebuild expectation
 
