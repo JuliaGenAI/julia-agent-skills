@@ -16,6 +16,15 @@
       "skills": [
         "./skills/documenter-vitepress"
       ]
+    },
+    {
+      "name": "jump",
+      "description": "Build, solve, and debug mathematical optimization models with JuMP.jl",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/jump"
+      ]
     }
   ]
 }
