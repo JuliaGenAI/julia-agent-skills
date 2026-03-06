@@ -48,6 +48,7 @@ To add skills to a single repository instead, place them under `.github/skills/`
 | Skill | Description |
 |-------|-------------|
 | [documenter-vitepress](skills/documenter-vitepress/) | Set up and develop Julia documentation sites with DocumenterVitepress.jl |
+| [tachikoma](skills/tachikoma/) | Build rich, interactive terminal UI applications in Julia with Tachikoma.jl |
 
 ## Contributing
 

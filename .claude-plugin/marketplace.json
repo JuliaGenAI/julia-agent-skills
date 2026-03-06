@@ -16,6 +16,15 @@
       "skills": [
         "./skills/documenter-vitepress"
       ]
+    },
+    {
+      "name": "tachikoma",
+      "description": "Build terminal UI (TUI) applications in Julia with Tachikoma.jl",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/tachikoma"
+      ]
     }
   ]
 }
