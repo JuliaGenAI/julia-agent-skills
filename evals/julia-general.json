@@ -1,0 +1,23 @@
+{
+  "skill_name": "julia-general",
+  "evals": [
+    {
+      "id": 0,
+      "prompt": "Add CSV.jl to my Julia project's test dependencies",
+      "expected_output": "Agent uses Pkg.activate(\"test\") and Pkg.add(\"CSV\") rather than manually editing Project.toml. Should also set JULIA_PKG_PRECOMPILE_AUTO=0 for speed.",
+      "files": []
+    },
+    {
+      "id": 1,
+      "prompt": "What does the `reduce` function do in Julia? Give me a quick summary with examples.",
+      "expected_output": "Agent looks up docs via Base.doc(Base.reduce) or equivalent rather than relying solely on training data.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "I'm starting a new Julia file to process some CSV data. Set up the project structure for me.",
+      "expected_output": "Agent uses --project=., follows snake_case naming, proper module structure, uses Pkg.add for dependencies.",
+      "files": []
+    }
+  ]
+}
